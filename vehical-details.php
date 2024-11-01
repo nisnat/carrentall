@@ -1,54 +1,70 @@
 <?php 
 session_start();
 include('includes/config.php');
-error_reporting(0);
-if(isset($_POST['submit']))
-{
-$fromdate=$_POST['fromdate'];
-$todate=$_POST['todate']; 
-$message=$_POST['message'];
-$useremail=$_SESSION['login'];
-$status=0;
-$vhid=$_GET['vhid'];
-$bookingno=mt_rand(100000000, 999999999);
-$ret="SELECT * FROM tblbooking where (:fromdate BETWEEN date(FromDate) and date(ToDate) || :todate BETWEEN date(FromDate) and date(ToDate) || date(FromDate) BETWEEN :fromdate and :todate) and VehicleId=:vhid";
-$query1 = $dbh -> prepare($ret);
-$query1->bindParam(':vhid',$vhid, PDO::PARAM_STR);
-$query1->bindParam(':fromdate',$fromdate,PDO::PARAM_STR);
-$query1->bindParam(':todate',$todate,PDO::PARAM_STR);
-$query1->execute();
-$results1=$query1->fetchAll(PDO::FETCH_OBJ);
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+if (isset($_POST['submit'])) {
+  $fromdate = $_POST['fromdate'];
+  $todate = $_POST['todate']; 
+  $message = $_POST['message'];
+  $useremail = $_SESSION['login'];
+  $status = 0;
+  $vhid = $_GET['vhid'];
+  $bookingno = mt_rand(100000000, 999999999);
 
-if($query1->rowCount()==0)
-{
+  // File upload handling for ID card and driving license
+  $id_card = $_FILES['id_card']['name'];
+  $id_card_tmp = $_FILES['id_card']['tmp_name'];
+  $driving_license = $_FILES['driving_license']['name'];
+  $driving_license_tmp = $_FILES['driving_license']['tmp_name'];
 
-$sql="INSERT INTO  tblbooking(BookingNumber,userEmail,VehicleId,FromDate,ToDate,message,Status) VALUES(:bookingno,:useremail,:vhid,:fromdate,:todate,:message,:status)";
-$query = $dbh->prepare($sql);
-$query->bindParam(':bookingno',$bookingno,PDO::PARAM_STR);
-$query->bindParam(':useremail',$useremail,PDO::PARAM_STR);
-$query->bindParam(':vhid',$vhid,PDO::PARAM_STR);
-$query->bindParam(':fromdate',$fromdate,PDO::PARAM_STR);
-$query->bindParam(':todate',$todate,PDO::PARAM_STR);
-$query->bindParam(':message',$message,PDO::PARAM_STR);
-$query->bindParam(':status',$status,PDO::PARAM_STR);
-$query->execute();
-$lastInsertId = $dbh->lastInsertId();
-if($lastInsertId)
-{
-echo "<script>alert('Booking successfull.');</script>";
-echo "<script type='text/javascript'> document.location = 'my-booking.php'; </script>";
+  // Set file upload paths
+  $id_card_path = "uploads/idcard/" . $id_card;
+  $driving_license_path = "uploads/license/" . $driving_license;
+
+  // Move the uploaded files to their respective directories
+  move_uploaded_file($id_card_tmp, $id_card_path);
+  move_uploaded_file($driving_license_tmp, $driving_license_path);
+
+  // Check if the vehicle is already booked for the selected dates
+  $ret = "SELECT * FROM tblbooking WHERE (:fromdate BETWEEN date(FromDate) and date(ToDate) || :todate BETWEEN date(FromDate) and date(ToDate) || date(FromDate) BETWEEN :fromdate and :todate) AND VehicleId=:vhid";
+  $query1 = $dbh->prepare($ret);
+  $query1->bindParam(':vhid', $vhid, PDO::PARAM_STR);
+  $query1->bindParam(':fromdate', $fromdate, PDO::PARAM_STR);
+  $query1->bindParam(':todate', $todate, PDO::PARAM_STR);
+  $query1->execute();
+  $results1 = $query1->fetchAll(PDO::FETCH_OBJ);
+
+  if ($query1->rowCount() == 0) {
+    // Insert booking data along with the ID card and driving license paths
+    $sql = "INSERT INTO tblbooking (BookingNumber, userEmail, VehicleId, FromDate, ToDate, message, Status, id_card, driving_license) 
+            VALUES (:bookingno, :useremail, :vhid, :fromdate, :todate, :message, :status, :id_card, :driving_license)";
+    $query = $dbh->prepare($sql);
+    $query->bindParam(':bookingno', $bookingno, PDO::PARAM_STR);
+    $query->bindParam(':useremail', $useremail, PDO::PARAM_STR);
+    $query->bindParam(':vhid', $vhid, PDO::PARAM_STR);
+    $query->bindParam(':fromdate', $fromdate, PDO::PARAM_STR);
+    $query->bindParam(':todate', $todate, PDO::PARAM_STR);
+    $query->bindParam(':message', $message, PDO::PARAM_STR);
+    $query->bindParam(':status', $status, PDO::PARAM_STR);
+    $query->bindParam(':id_card', $id_card_path, PDO::PARAM_STR);
+    $query->bindParam(':driving_license', $driving_license_path, PDO::PARAM_STR);
+    $query->execute();
+    
+    $lastInsertId = $dbh->lastInsertId();
+    if ($lastInsertId) {
+      echo "<script>alert('Booking successful.');</script>";
+      echo "<script type='text/javascript'> document.location = 'my-booking.php'; </script>";
+    } else {
+      echo "<script>alert('Something went wrong. Please try again');</script>";
+      echo "<script type='text/javascript'> document.location = 'car-listing.php'; </script>";
+    }
+  } else {
+    echo "<script>alert('Car already booked for these days');</script>";
+    echo "<script type='text/javascript'> document.location = 'car-listing.php'; </script>";
+  }
 }
-else 
-{
-echo "<script>alert('Something went wrong. Please try again');</script>";
- echo "<script type='text/javascript'> document.location = 'car-listing.php'; </script>";
-} }  else{
- echo "<script>alert('Car already booked for these days');</script>"; 
- echo "<script type='text/javascript'> document.location = 'car-listing.php'; </script>";
-}
-
-}
-
 ?>
 
 
@@ -337,35 +353,53 @@ $_SESSION['brndid']=$result->bid;
       
       <!--Side-Bar-->
       <aside class="col-md-3">
-      
         <div class="share_vehicle">
-          <p>Share: <a href="#"><i class="fa fa-facebook-square" aria-hidden="true"></i></a> <a href="#"><i class="fa fa-twitter-square" aria-hidden="true"></i></a> <a href="#"><i class="fa fa-linkedin-square" aria-hidden="true"></i></a> <a href="#"><i class="fa fa-google-plus-square" aria-hidden="true"></i></a> </p>
+          <p>Share: 
+            <a href="#"><i class="fa fa-facebook-square" aria-hidden="true"></i></a> 
+            <a href="#"><i class="fa fa-twitter-square" aria-hidden="true"></i></a> 
+            <a href="#"><i class="fa fa-linkedin-square" aria-hidden="true"></i></a> 
+            <a href="#"><i class="fa fa-google-plus-square" aria-hidden="true"></i></a>
+          </p>
         </div>
+
         <div class="sidebar_widget">
           <div class="widget_heading">
-            <h5><i class="fa fa-envelope" aria-hidden="true"></i>Book Now</h5>
+            <h5><i class="fa fa-envelope" aria-hidden="true"></i> Book Now</h5>
           </div>
-          <form method="post">
+          
+          <form method="post" enctype="multipart/form-data">
             <div class="form-group">
               <label>From Date:</label>
               <input type="date" class="form-control" name="fromdate" placeholder="From Date" required>
             </div>
+            
             <div class="form-group">
               <label>To Date:</label>
               <input type="date" class="form-control" name="todate" placeholder="To Date" required>
             </div>
+            
             <div class="form-group">
               <textarea rows="4" class="form-control" name="message" placeholder="Message" required></textarea>
             </div>
-          <?php if($_SESSION['login'])
-              {?>
-              <div class="form-group">
-                <input type="submit" class="btn"  name="submit" value="Book Now">
-              </div>
-              <?php } else { ?>
-<a href="#loginform" class="btn btn-xs uppercase" data-toggle="modal" data-dismiss="modal">Login For Book</a>
 
-              <?php } ?>
+            <!-- File Upload Section -->
+            <div class="form-group">
+              <label>Upload ID Card:</label>
+              <input type="file" class="form-control" name="id_card" accept="image/*" required>
+            </div>
+            
+            <div class="form-group">
+              <label>Upload Driving License:</label>
+              <input type="file" class="form-control" name="driving_license" accept="image/*" required>
+            </div>
+
+            <?php if($_SESSION['login']) { ?>
+              <div class="form-group">
+                <input type="submit" class="btn" name="submit" value="Book Now">
+              </div>
+            <?php } else { ?>
+              <a href="#loginform" class="btn btn-xs uppercase" data-toggle="modal" data-dismiss="modal">Login To Book</a>
+            <?php } ?>
           </form>
         </div>
       </aside>
