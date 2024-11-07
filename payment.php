@@ -55,7 +55,7 @@ var_dump($result);
 <html lang="en">
 
 <head>
-    <title>UniRide Portal - Payment</title>
+    <title>UniRide Portal | Payment</title>
     <link rel="stylesheet" href="assets/css/bootstrap.min.css" type="text/css">
     <link rel="stylesheet" href="assets/css/style.css" type="text/css">
     <link rel="stylesheet" href="assets/css/font-awesome.min.css">

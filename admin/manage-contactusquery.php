@@ -35,7 +35,7 @@ $query -> execute();
 	<meta name="author" content="">
 	<meta name="theme-color" content="#3e454c">
 	
-	<title>UniRide Portal |Admin Manage Queries   </title>
+	<title>UniRide Portal | Admin Manage Queries   </title>
 
 	<!-- Font awesome -->
 	<link rel="stylesheet" href="css/font-awesome.min.css">
@@ -89,7 +89,7 @@ $query -> execute();
 
 						<!-- Zero Configuration Table -->
 						<div class="panel panel-default">
-							<div class="panel-heading">User queries</div>
+							<div class="panel-heading">User Queries</div>
 							<div class="panel-body">
 					
 								<table id="zctb" class="display table table-striped table-bordered table-hover" cellspacing="0" width="100%">

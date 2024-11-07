@@ -132,7 +132,7 @@ function MM_jumpMenu(targ,selObj,restore){ //v3.0
   	        	  <?php if($error){?><div class="errorWrap"><strong>ERROR</strong>:<?php echo htmlentities($error); ?> </div><?php } 
 				else if($msg){?><div class="succWrap"><strong>SUCCESS</strong>:<?php echo htmlentities($msg); ?> </div><?php }?>
 											<div class="form-group">
-												<label class="col-sm-4 control-label">select Page</label>
+												<label class="col-sm-4 control-label">Select Page</label>
 												<div class="col-sm-8">
 															   <select name="menu1" onChange="MM_jumpMenu('parent',this,0)">
                   <option value="" selected="selected" class="form-control">***Select One***</option>

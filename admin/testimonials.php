@@ -49,7 +49,7 @@ $msg="Testimonial Successfully Active";
 	<meta name="author" content="">
 	<meta name="theme-color" content="#3e454c">
 	
-	<title>UniRide Portal |Admin Manage testimonials   </title>
+	<title>UniRide Portal | Admin Manage Testimonials   </title>
 
 	<!-- Font awesome -->
 	<link rel="stylesheet" href="css/font-awesome.min.css">

@@ -25,11 +25,7 @@ error_reporting(0);
 		<link rel="alternate stylesheet" type="text/css" href="assets/switcher/css/pink.css" title="pink" media="all" />
 		<link rel="alternate stylesheet" type="text/css" href="assets/switcher/css/green.css" title="green" media="all" />
 		<link rel="alternate stylesheet" type="text/css" href="assets/switcher/css/purple.css" title="purple" media="all" />
-<link rel="apple-touch-icon-precomposed" sizes="144x144" href="assets/images/favicon-icon/apple-touch-icon-144-precomposed.png">
-<link rel="apple-touch-icon-precomposed" sizes="114x114" href="assets/images/favicon-icon/apple-touch-icon-114-precomposed.html">
-<link rel="apple-touch-icon-precomposed" sizes="72x72" href="assets/images/favicon-icon/apple-touch-icon-72-precomposed.png">
-<link rel="apple-touch-icon-precomposed" href="assets/images/favicon-icon/apple-touch-icon-57-precomposed.png">
-<link rel="shortcut icon" href="assets/images/favicon-icon/favicon.png">
+
 <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,900" rel="stylesheet"> 
 </head>
 <body>
@@ -106,7 +102,7 @@ foreach($results as $result)
 </div>
 <div class="car-title-m">
 <h6><a href="vehical-details.php?vhid=<?php echo htmlentities($result->id);?>"> <?php echo htmlentities($result->VehiclesTitle);?></a></h6>
-<span class="price">$<?php echo htmlentities($result->PricePerDay);?> /Day</span> 
+<span class="price">RM<?php echo htmlentities($result->PricePerDay);?> /Day</span> 
 </div>
 <div class="inventory_info_m">
 <p><?php echo substr($result->VehiclesOverview,0,70);?></p>
@@ -244,5 +240,4 @@ foreach($results as $result)
 
 </body>
 
-<!-- Mirrored from themes.webmasterdriver.net/carforyou/demo/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 16 Jun 2017 07:22:11 GMT -->
 </html>

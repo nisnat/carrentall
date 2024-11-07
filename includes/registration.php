@@ -1,5 +1,5 @@
 <?php
-//error_reporting(0);
+
 if(isset($_POST['signup']))
 {
 $fname=$_POST['fullname'];
@@ -66,7 +66,9 @@ error:function (){}
                    <span id="user-availability-status" style="font-size:12px;"></span> 
                 </div>
                 <div class="form-group">
-                  <input type="password" class="form-control" id="password" name="password" placeholder="Password" required="required">
+                  <input type="password" class="form-control" id="password" name="password" placeholder="Password"
+                  maxlength="60" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one 
+                  uppercase and lowercase letter, and at least 8 or more characters" required required="required">
                 </div>
           
                 <div class="form-group checkbox">

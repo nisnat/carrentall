@@ -58,10 +58,14 @@ return true;
                   <input type="text" name="mobile" class="form-control" placeholder="Your Reg. Mobile*" required="">
                 </div>
   <div class="form-group">
-                  <input type="password" name="newpassword" class="form-control" placeholder="New Password*" required="">
+                  <input type="password" name="newpassword" class="form-control" placeholder="New Password*" 
+                  maxlength="60" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one 
+                  uppercase and lowercase letter, and at least 8 or more characters" required required="">
                 </div>
   <div class="form-group">
-                  <input type="password" name="confirmpassword" class="form-control" placeholder="Confirm Password*" required="">
+                  <input type="password" name="confirmpassword" class="form-control" placeholder="Confirm Password*" 
+                  maxlength="60" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one 
+                  uppercase and lowercase letter, and at least 8 or more characters" required required="">
                 </div>
                 <div class="form-group">
                   <input type="submit" value="Reset My Password" name="update" class="btn btn-block">

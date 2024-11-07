@@ -130,7 +130,9 @@ return true;
 											<div class="form-group">
 												<label class="col-sm-4 control-label">New Password</label>
 												<div class="col-sm-8">
-													<input type="password" class="form-control" name="newpassword" id="newpassword" required>
+													<input type="password" class="form-control" name="newpassword" id="newpassword"
+													maxlength="60" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one 
+													uppercase and lowercase letter, and at least 8 or more characters" required required>
 												</div>
 											</div>
 											<div class="hr-dashed"></div>
@@ -138,7 +140,9 @@ return true;
 											<div class="form-group">
 												<label class="col-sm-4 control-label">Confirm Password</label>
 												<div class="col-sm-8">
-													<input type="password" class="form-control" name="confirmpassword" id="confirmpassword" required>
+													<input type="password" class="form-control" name="confirmpassword" id="confirmpassword"
+													maxlength="60" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one 
+                  									uppercase and lowercase letter, and at least 8 or more characters" required required>
 												</div>
 											</div>
 											<div class="hr-dashed"></div>
